@@ -40,7 +40,7 @@ var artist = input
 
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
 .then(function(response) {
-    // console.log(response);
+    console.log(response.data);
     console.log('Name of venue: ' + response.data[0].venue.name);
     console.log('Venue location: ' + response.data[0].venue.city);
     console.log(response.data[0].datetime);
@@ -64,4 +64,22 @@ spotify.search({
   .catch(function(err) {
     console.log(err);
   });
+}
+
+function getMovies(movie) {
+  var movie = input
+  axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
+  function(response) {
+    // console.log(response.data)
+    console.log('\n=====================================\n');
+    console.log('Movie title: ' + response.data.Title);
+    console.log('Year released: ' + response.data.Year);
+    console.log('IMDB rating: ' + response.data.Ratings[0].Value);
+    console.log('Rotten Tomatoes rating: ' + response.data.Ratings[1].Value);
+    console.log('Country movie was produced in: ' + response.data.Country);
+    console.log('Language of the movie: ' + response.data.Language);
+    console.log('Plot: ' + response.data.Plot);
+    console.log('Actors: ' + response.data.Actors);
+    console.log('\n====================================\n');
+  })
 }
