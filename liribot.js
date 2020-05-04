@@ -42,10 +42,26 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 .then(function(response) {
     // console.log(response);
     console.log('Name of venue: ' + response.data[0].venue.name);
-    console.log('Venue location:' + response.data[0].venue.city);
+    console.log('Venue location: ' + response.data[0].venue.city);
     console.log(response.data[0].datetime);
    }) 
   .catch(function(error) {
       console.log(error)
+  });
+}
+
+function getSongs(song) {
+var song = input
+spotify.search({ 
+    type: 'track',
+    query: song})
+  .then(function(data) {
+    // console.log(data.tracks.items[0]);
+    console.log('Artist: ', data.tracks.items[0].album.artists[0].name);
+    console.log('Preview Song: ' + data.tracks.items[0].external_urls.spotify)
+    console.log('Album Name: ' + data.tracks.items[0].album.name)
+  })
+  .catch(function(err) {
+    console.log(err);
   });
 }
