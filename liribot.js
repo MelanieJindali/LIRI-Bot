@@ -40,10 +40,13 @@ var artist = input
 
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
 .then(function(response) {
-    console.log(response.data);
+    // console.log(response.data);
     console.log('Name of venue: ' + response.data[0].venue.name);
     console.log('Venue location: ' + response.data[0].venue.city);
-    console.log(response.data[0].datetime);
+    // Format using moment
+    // console.log(response.data[0].datetime);
+    var eDate = moment(response.data[0].datetime).format('MM/DD/YYYY');
+    console.log('Date of the Event: ' + eDate);
    }) 
   .catch(function(error) {
       console.log(error)
@@ -82,4 +85,39 @@ function getMovies(movie) {
     console.log('Actors: ' + response.data.Actors);
     console.log('\n====================================\n');
   })
+}
+
+function doWhatItSays() {
+fs.readFile("random.txt", "utf8", function(error, data) {
+
+  if (error) {
+    return console.log(error);
+  }
+  data = data.split(",");
+  console.log(data);
+
+  var command = data[0];
+  var input = data[1];
+
+  switch (command) {
+    case "concert-this":
+      getBands()
+      break;
+    case "spotify-this-song":
+      if (input === "") {
+        input = defaultSong;
+      }
+      getSongs()
+      break;
+    case "movie-this":
+      if (input == "") {
+        input = defaultMovie;
+      }
+      getMovies()
+      break;
+    }
+  });
+  getBands();
+  getSongs();
+  getMovies();
 }
