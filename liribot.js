@@ -4,7 +4,7 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var moment = require("moment");
-var fs = require("fs")
+var fs = require("fs");
 
 var command = process.argv[2];
 var input = process.argv[3];
@@ -14,22 +14,16 @@ var defaultMovie = "Mr. Nobody";
 
 switch (command) {
   case "concert-this":
-    getBands()
+    getBands(input)
     break;
   case "spotify-this-song":
-    if (input === "") {
-      input = defaultSong;
-    }
-    getSongs()
+    getSongs(input)
     break;
   case "movie-this":
-    if (input == "") {
-      input = defaultMovie;
-    }
-    getMovies()
+    getMovies(input)
     break;
   case "do-what-it-says":
-    doWhatItSays()
+    doWhatItSays(input)
     break;
   default:
     break;
@@ -55,9 +49,12 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 
 function getSongs(song) {
 var song = input
-spotify.search({ 
-    type: 'track',
-    query: song})
+
+if (song === "") {
+  song = defaultSong;
+}
+
+spotify.search({ type: 'track', query: song})
   .then(function(data) {
     // console.log(data.tracks.items[0]);
     console.log('Artist: ', data.tracks.items[0].album.artists[0].name);
@@ -94,30 +91,27 @@ fs.readFile("random.txt", "utf8", function(error, data) {
     return console.log(error);
   }
   data = data.split(",");
-  console.log(data);
+  // console.log(data);
 
-  var command = data[0];
-  var input = data[1];
+  command = data[0];
+  input = data[1];
 
   switch (command) {
     case "concert-this":
-      getBands()
+      getBands(input)
       break;
     case "spotify-this-song":
       if (input === "") {
         input = defaultSong;
       }
-      getSongs()
+      getSongs(input)
       break;
     case "movie-this":
-      if (input == "") {
+      if (input === "") {
         input = defaultMovie;
       }
-      getMovies()
+      getMovies(input)
       break;
     }
   });
-  getBands();
-  getSongs();
-  getMovies();
 }
