@@ -7,7 +7,7 @@ var moment = require("moment");
 var fs = require("fs");
 
 var command = process.argv[2];
-var input = process.argv[3];
+var input = process.argv.slice(3).join(" ");
 
 var defaultSong = "The Sign";
 var defaultMovie = "Mr. Nobody";
@@ -18,14 +18,16 @@ switch (command) {
     break;
   case "spotify-this-song":
     getSongs(input)
+
     break;
   case "movie-this":
     getMovies(input)
+
     break;
   case "do-what-it-says":
     doWhatItSays(input)
-    break;
-  default:
+
+  default:getBands(defaultMovie), getSongs(defaultSong)
     break;
 }
 
@@ -35,12 +37,14 @@ var artist = input
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
 .then(function(response) {
     // console.log(response.data);
-    console.log('Name of venue: ' + response.data[0].venue.name);
-    console.log('Venue location: ' + response.data[0].venue.city);
+    console.log('\n========================================================================\n');
+    console.log(`Name of venue: ${response.data[0].venue.name}`);
+    console.log(`Venue location: ${response.data[0].venue.city}`);
     // Format using moment
     // console.log(response.data[0].datetime);
     var eDate = moment(response.data[0].datetime).format('MM/DD/YYYY');
     console.log('Date of the Event: ' + eDate);
+    console.log('\n========================================================================\n');
    }) 
   .catch(function(error) {
       console.log(error)
@@ -49,17 +53,18 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 
 function getSongs(song) {
 var song = input
-
-if (song === "") {
+if (song === undefined) {
   song = defaultSong;
 }
-
-spotify.search({ type: 'track', query: song})
+spotify.search({ type: 'track', query: song })
   .then(function(data) {
     // console.log(data.tracks.items[0]);
-    console.log('Artist: ', data.tracks.items[0].album.artists[0].name);
-    console.log('Preview Song: ' + data.tracks.items[0].external_urls.spotify)
-    console.log('Album Name: ' + data.tracks.items[0].album.name)
+    console.log('\n========================================================================\n');
+    console.log(`Song Name: ${data.tracks.items[0].name}`);
+    console.log(`Artist(s) Name: ${data.tracks.items[0].album.artists[0].name}`);
+    console.log(`Preview Song: ${data.tracks.items[0].external_urls.spotify}`);
+    console.log(`Album Name: ${data.tracks.items[0].album.name}`);
+    console.log('\n========================================================================\n');
   })
   .catch(function(err) {
     console.log(err);
@@ -67,20 +72,23 @@ spotify.search({ type: 'track', query: song})
 }
 
 function getMovies(movie) {
-  var movie = input
+    input = movie
+    if (movie === undefined) {
+      movie = defaultMovie;
+    }
   axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
   function(response) {
     // console.log(response.data)
-    console.log('\n=====================================\n');
-    console.log('Movie title: ' + response.data.Title);
-    console.log('Year released: ' + response.data.Year);
-    console.log('IMDB rating: ' + response.data.Ratings[0].Value);
-    console.log('Rotten Tomatoes rating: ' + response.data.Ratings[1].Value);
-    console.log('Country movie was produced in: ' + response.data.Country);
-    console.log('Language of the movie: ' + response.data.Language);
-    console.log('Plot: ' + response.data.Plot);
-    console.log('Actors: ' + response.data.Actors);
-    console.log('\n====================================\n');
+    console.log('\n=========================================================================\n');
+    console.log(`Movie title: ${response.data.Title}`);
+    console.log(`Year released: ${response.data.Year}`);
+    console.log(`IMDB rating: ${response.data.Ratings[0].Value}`);
+    console.log(`Rotten Tomatoes rating: ${response.data.Ratings[1].Value}`);
+    console.log(`Country movie was produced in: ${response.data.Country}`);
+    console.log(`Language of the movie: ${response.data.Language}`);
+    console.log(`Plot: ${response.data.Plot}`);
+    console.log(`Actors: ${response.data.Actors}`);
+    console.log('\n========================================================================\n');
   })
 }
 
@@ -101,15 +109,9 @@ fs.readFile("random.txt", "utf8", function(error, data) {
       getBands(input)
       break;
     case "spotify-this-song":
-      if (input === "") {
-        input = defaultSong;
-      }
       getSongs(input)
       break;
     case "movie-this":
-      if (input === "") {
-        input = defaultMovie;
-      }
       getMovies(input)
       break;
     }
