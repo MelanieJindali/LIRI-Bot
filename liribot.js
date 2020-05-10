@@ -27,12 +27,12 @@ switch (command) {
   case "do-what-it-says":
     doWhatItSays(input)
 
-  default:getBands(defaultMovie), getSongs(defaultSong)
+  default:
     break;
 }
 
 function getBands(artist) {
-var artist = input
+  var artist = input
 
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
 .then(function(response) {
@@ -52,10 +52,10 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 }
 
 function getSongs(song) {
-var song = input
-if (song === undefined) {
-  song = defaultSong;
-}
+  var song = input
+  if (song === undefined) {
+    song = defaultSong;
+  }
 spotify.search({ type: 'track', query: song })
   .then(function(data) {
     // console.log(data.tracks.items[0]);
@@ -104,16 +104,7 @@ fs.readFile("random.txt", "utf8", function(error, data) {
   command = data[0];
   input = data[1];
 
-  switch (command) {
-    case "concert-this":
-      getBands(input)
-      break;
-    case "spotify-this-song":
-      getSongs(input)
-      break;
-    case "movie-this":
-      getMovies(input)
-      break;
-    }
+  doWhatItSays();
+
   });
 }
