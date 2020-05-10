@@ -104,7 +104,22 @@ fs.readFile("random.txt", "utf8", function(error, data) {
   command = data[0];
   input = data[1];
 
-  doWhatItSays();
+  switch (command) {
+    case "concert-this":
+      getBands(input)
+      break;
+    case "spotify-this-song":
+      getSongs(input)
+  
+      break;
+    case "movie-this":
+      getMovies(input)
+      
+      break;
+    default:
+
+      break;
+  }
 
   });
 }
