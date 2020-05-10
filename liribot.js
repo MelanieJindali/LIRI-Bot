@@ -53,7 +53,7 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 
 function getSongs(song) {
   var song = input
-  if (song === undefined) {
+  if (song === "") {
     song = defaultSong;
   }
 spotify.search({ type: 'track', query: song })
@@ -73,7 +73,7 @@ spotify.search({ type: 'track', query: song })
 
 function getMovies(movie) {
     input = movie
-    if (movie === undefined) {
+    if (movie === "") {
       movie = defaultMovie;
     }
   axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
@@ -114,7 +114,7 @@ fs.readFile("random.txt", "utf8", function(error, data) {
       break;
     case "movie-this":
       getMovies(input)
-      
+
       break;
     default:
 
